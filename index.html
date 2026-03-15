@@ -292,19 +292,20 @@
         }
 
         .meal-chip {
-            display: inline-block;
-            padding: 8px 16px;
+            display: block;
+            padding: 12px 16px;
             background: #FAFAFA;
             border: 1px solid #E0E0E0;
-            border-radius: 20px;
-            margin: 4px;
+            border-radius: 12px;
+            margin: 8px 0;
             font-size: 14px;
             cursor: pointer;
+            transition: all 0.3s ease;
         }
 
         .meal-chip:hover {
-            background: #FEF2F2;
-            border-color: #FF6B35;
+            background: #F3E5F5;
+            border-color: #9C27B0;
         }
 
         .parsed-result {
@@ -454,6 +455,34 @@
         .motivation-subtitle {
             font-size: 14px;
             opacity: 0.95;
+        }
+
+        /* AI Insight */
+        .ai-insight {
+            margin-top: 16px;
+            padding: 16px;
+            background: linear-gradient(135deg, #F3E5F5 0%, #E1F5FE 100%);
+            border-radius: 12px;
+            border-left: 4px solid #9C27B0;
+        }
+
+        .ai-badge {
+            display: inline-block;
+            background: #9C27B0;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        .ai-text {
+            font-size: 14px;
+            line-height: 1.6;
+            color: #333;
         }
 
         /* Workout Tracker */
@@ -631,23 +660,69 @@
     </style>
 </head>
 <body>
-    <div class="header">
+    <div class="header" id="appHeader" style="display: none;">
         <div class="header-content">
-            <button class="back-btn hidden" id="backBtn">←</button>
+            <button class="back-btn" id="backBtn" onclick="backNavigation()">←</button>
             <h1 id="headerTitle">FITTR</h1>
             <div class="date-badge" id="currentDate"></div>
         </div>
     </div>
 
     <div class="container">
+        <!-- Splash Screen -->
+        <div id="splashScreen" style="min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 24px;">
+            <div style="background: linear-gradient(135deg, #7B1FA2 0%, #512DA8 100%); padding: 40px 32px; border-radius: 20px; color: white; box-shadow: 0 8px 24px rgba(123, 31, 162, 0.4); max-width: 500px;">
+                <div style="font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; opacity: 0.9; margin-bottom: 12px; text-align: center;">AI-POWERED FITTR</div>
+                <div style="font-size: 28px; font-weight: 700; margin-bottom: 20px; text-align: center; line-height: 1.3;">What if FITTR could predict and prevent churn?</div>
+                <div style="font-size: 15px; line-height: 1.7; opacity: 0.95; margin-bottom: 24px;">
+                    This prototype explores a few AI capabilities:
+                </div>
+                <div style="margin-bottom: 24px; display: grid; gap: 16px; font-size: 14px;">
+                    <div style="display: flex; align-items: flex-start; gap: 12px;">
+                        <span style="font-size: 20px; flex-shrink: 0;">✨</span>
+                        <div>
+                            <div style="font-weight: 600; margin-bottom: 4px;">Goal Prediction AI</div>
+                            <div style="opacity: 0.9; font-size: 13px; line-height: 1.5;">Forecasts when users will hit their target weight. Personalized to the individual's progress and patterns.</div>
+                        </div>
+                    </div>
+                    <div style="display: flex; align-items: flex-start; gap: 12px;">
+                        <span style="font-size: 20px; flex-shrink: 0;">🎯</span>
+                        <div>
+                            <div style="font-weight: 600; margin-bottom: 4px;">Smart Sequencing</div>
+                            <div style="opacity: 0.9; font-size: 13px; line-height: 1.5;">AI-optimized workout order based on muscle recovery.</div>
+                        </div>
+                    </div>
+                    <div style="display: flex; align-items: flex-start; gap: 12px;">
+                        <span style="font-size: 20px; flex-shrink: 0;">🔄</span>
+                        <div>
+                            <div style="font-weight: 600; margin-bottom: 4px;">Smart Substitution</div>
+                            <div style="opacity: 0.9; font-size: 13px; line-height: 1.5;">Alternative recommendations based on your coach's plan so you do not fall off-track.</div>
+                        </div>
+                    </div>
+                </div>
+                <div style="background: rgba(255, 255, 255, 0.15); padding: 16px; border-radius: 12px; margin-bottom: 24px; font-size: 14px; line-height: 1.6;">
+                    A more thorough AI-forward strategy can be explored to keep up with the agentic world—if you're interested in discussing further.
+                </div>
+                <button onclick="showPrototype()" style="width: 100%; padding: 16px; background: white; color: #7B1FA2; border: none; border-radius: 12px; font-size: 16px; font-weight: 700; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.2); transition: transform 0.2s; margin-bottom: 16px;">
+                    View Interactive Prototype →
+                </button>
+                <div style="text-align: center; font-size: 14px; opacity: 0.9; line-height: 1.6;">
+                    Built by <strong>Pooja Bindumadhav</strong><br>
+                    <span style="font-size: 13px; opacity: 0.85;">Questions? Let's discuss: <a href="mailto:poojamadhav@gmail.com" style="color: white; text-decoration: underline;">poojamadhav@gmail.com</a></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- App Container (hidden initially) -->
+        <div id="appContainer" style="display: none;">
         <!-- Home Screen -->
         <div id="homeScreen">
             <!-- Motivational Banner -->
             <div class="motivation-banner">
-                <div class="motivation-icon">🔥</div>
+                <div class="motivation-icon">✨</div>
                 <div class="motivation-text">
-                    <div class="motivation-title">5 Day Streak!</div>
-                    <div class="motivation-subtitle">You've logged food 5 days in a row</div>
+                    <div class="motivation-title">AI Prediction: You'll hit your goal!</div>
+                    <div class="motivation-subtitle">At your current pace, you'll reach 145 lbs by April 12</div>
                 </div>
             </div>
 
@@ -731,6 +806,15 @@
                         <div class="progress-change">-1.44 lbs this week ↓</div>
                     </div>
                 </div>
+                
+                <!-- AI Insight -->
+                <div class="ai-insight">
+                    <div class="ai-badge">✨ AI Insight</div>
+                    <div class="ai-text">
+                        You're averaging <strong>75g protein/day</strong> but your goal is 90g. Try adding 1 scoop of protein powder to breakfast to close the gap.
+                    </div>
+                </div>
+                
                 <div style="text-align: center; margin-top: 16px;">
                     <button class="action-btn secondary" style="width: 100%;" onclick="alert('Full progress dashboard coming soon!')">
                         View Full Progress →
@@ -771,9 +855,16 @@
                 </div>
 
                 <div class="recent-meals">
-                    <div class="recent-meals-title">Recent Meals</div>
-                    <div class="meal-chip" onclick="quickLog('Yesterday\'s breakfast')">Yesterday's breakfast (533 kcal)</div>
-                    <div class="meal-chip" onclick="quickLog('Usual lunch')">Usual lunch (625 kcal)</div>
+                    <div class="recent-meals-title">✨ AI Suggests for You</div>
+                    <div style="font-size: 13px; color: #666; margin-bottom: 12px;">Based on your protein gap and meal history</div>
+                    <div class="meal-chip" onclick="quickLog('High-protein breakfast')">
+                        <strong>High-protein breakfast</strong><br>
+                        <span style="font-size: 12px; color: #666;">Will add 25g protein (closes 60% of your gap)</span>
+                    </div>
+                    <div class="meal-chip" onclick="quickLog('Usual lunch + paneer')">
+                        <strong>Usual lunch + 100g paneer</strong><br>
+                        <span style="font-size: 12px; color: #666;">Adds 18g protein</span>
+                    </div>
                     <div class="meal-chip" onclick="quickLog('Protein shake')">Protein shake (139 kcal)</div>
                 </div>
             </div>
@@ -785,6 +876,14 @@
                 <div class="card-title">Upper Body Workout</div>
                 <div class="workout-meta">
                     <span>💪 Triceps, Delts, Chest, Shoulders, Abs</span>
+                </div>
+                
+                <!-- AI Churn Alert -->
+                <div class="ai-insight" style="margin-bottom: 20px;">
+                    <div class="ai-badge">✨ AI Noticed</div>
+                    <div class="ai-text">
+                        You typically skip workouts on Thursdays. Completing today keeps you on track for your 80% consistency goal!
+                    </div>
                 </div>
                 
                 <div class="workout-progress-header">
@@ -807,11 +906,12 @@
                         <div class="exercise-arrow">→</div>
                     </div>
 
-                    <div class="exercise-item" onclick="openExercise(1)">
+                    <div class="exercise-item" onclick="openExercise(1)" style="border: 2px solid #9C27B0; background: linear-gradient(135deg, #F3E5F5 0%, #E1F5FE 100%);">
                         <div class="exercise-checkbox">○</div>
                         <div class="exercise-info">
                             <div class="exercise-name">Decline Bench Press</div>
                             <div class="exercise-details">Chest • 0/4 sets</div>
+                            <div style="font-size: 11px; color: #9C27B0; font-weight: 600; margin-top: 4px;">✨ AI suggests: Start here next</div>
                         </div>
                         <div class="exercise-arrow">→</div>
                     </div>
@@ -871,15 +971,24 @@
                     <!-- Sets will be inserted here -->
                 </div>
 
+                <!-- AI Weight Suggestion -->
+                <div class="ai-insight" style="margin-top: 20px;">
+                    <div class="ai-badge">✨ AI Suggestion</div>
+                    <div class="ai-text">
+                        Based on your last workout, try <strong>27 lbs</strong> for progressive overload (+2 lbs from last time).
+                    </div>
+                </div>
+
                 <button class="action-btn" style="width: 100%; margin-top: 20px;" onclick="completeExercise()">
                     Mark Exercise Complete ✓
                 </button>
             </div>
         </div>
+        </div> <!-- End appContainer -->
     </div>
 
     <!-- Bottom Navigation -->
-    <div class="bottom-nav">
+    <div class="bottom-nav" id="appNav" style="display: none;">
         <div class="nav-item active" onclick="showHome()">
             <div class="nav-icon">🏠</div>
             <div>Home</div>
@@ -901,6 +1010,52 @@
     </div>
 
     <script>
+        let isInPrototype = false;
+        let isInSubScreen = false;
+
+        function showPrototype() {
+            document.getElementById('splashScreen').style.display = 'none';
+            document.getElementById('appContainer').style.display = 'block';
+            document.getElementById('appHeader').style.display = 'block';
+            document.getElementById('appNav').style.display = 'flex';
+            isInPrototype = true;
+            isInSubScreen = false;
+        }
+
+        function backToSplash() {
+            document.getElementById('splashScreen').style.display = 'flex';
+            document.getElementById('appContainer').style.display = 'none';
+            document.getElementById('appHeader').style.display = 'none';
+            document.getElementById('appNav').style.display = 'none';
+            
+            // Reset to home screen
+            document.getElementById('homeScreen').classList.remove('hidden');
+            document.getElementById('foodLogger').classList.remove('active');
+            document.getElementById('workoutTracker').classList.remove('active');
+            document.getElementById('exerciseDetail').classList.remove('active');
+            
+            isInPrototype = false;
+            isInSubScreen = false;
+        }
+
+        function backNavigation() {
+            if (document.getElementById('exerciseDetail').classList.contains('active')) {
+                document.getElementById('exerciseDetail').classList.remove('active');
+                document.getElementById('workoutTracker').classList.add('active');
+                document.getElementById('headerTitle').textContent = 'Today\'s Workout';
+                isInSubScreen = true;
+            } else if (document.getElementById('workoutTracker').classList.contains('active')) {
+                showHome();
+                isInSubScreen = false;
+            } else if (document.getElementById('foodLogger').classList.contains('active')) {
+                showHome();
+                isInSubScreen = false;
+            } else {
+                // We're on home screen, go back to splash
+                backToSplash();
+            }
+        }
+
         const options = { weekday: 'short', month: 'short', day: 'numeric' };
         document.getElementById('currentDate').textContent = 
             new Date().toLocaleDateString('en-US', options);
@@ -908,30 +1063,18 @@
         function showHome() {
             document.getElementById('homeScreen').classList.remove('hidden');
             document.getElementById('foodLogger').classList.remove('active');
-            document.getElementById('backBtn').classList.add('hidden');
             document.getElementById('headerTitle').textContent = 'FITTR';
             document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
             document.querySelectorAll('.nav-item')[0].classList.add('active');
+            isInSubScreen = false;
         }
 
         function showFoodLogger() {
             document.getElementById('homeScreen').classList.add('hidden');
             document.getElementById('foodLogger').classList.add('active');
-            document.getElementById('backBtn').classList.remove('hidden');
             document.getElementById('headerTitle').textContent = 'Log Food';
+            isInSubScreen = true;
         }
-
-        document.getElementById('backBtn').addEventListener('click', function() {
-            if (document.getElementById('exerciseDetail').classList.contains('active')) {
-                document.getElementById('exerciseDetail').classList.remove('active');
-                document.getElementById('workoutTracker').classList.add('active');
-                document.getElementById('headerTitle').textContent = 'Today\'s Workout';
-            } else if (document.getElementById('workoutTracker').classList.contains('active')) {
-                showHome();
-            } else {
-                showHome();
-            }
-        });
 
         function startVoiceInput() {
             alert('Voice recognition will be added in next iteration. Please type your meal instead!');
@@ -1034,8 +1177,8 @@
         function showWorkoutTracker() {
             document.getElementById('homeScreen').classList.add('hidden');
             document.getElementById('workoutTracker').classList.add('active');
-            document.getElementById('backBtn').classList.remove('hidden');
             document.getElementById('headerTitle').textContent = 'Today\'s Workout';
+            isInSubScreen = true;
         }
 
         function openExercise(index) {
