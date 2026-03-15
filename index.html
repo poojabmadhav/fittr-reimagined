@@ -1,0 +1,1113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>FITTR Reimagined</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            background: #F5F5F5;
+            color: #000;
+            line-height: 1.6;
+            padding-bottom: 80px;
+        }
+
+        /* Header */
+        .header {
+            background: #FFF;
+            padding: 16px 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            font-weight: 700;
+            color: #000;
+        }
+
+        .date-badge {
+            font-size: 14px;
+            color: #666;
+            font-weight: 500;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .card {
+            background: #FFF;
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        /* Split Progress */
+        .progress-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 8px;
+        }
+
+        .progress-section {
+            text-align: center;
+        }
+
+        .section-label {
+            font-size: 12px;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        .mini-ring {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 12px;
+            position: relative;
+        }
+
+        .mini-ring svg {
+            transform: rotate(-90deg);
+        }
+
+        .ring-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+
+        .ring-number {
+            font-size: 24px;
+            font-weight: 700;
+            display: block;
+        }
+
+        .ring-subtitle {
+            font-size: 11px;
+            color: #666;
+            display: block;
+        }
+
+        .macro-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            padding-top: 16px;
+            border-top: 1px solid #F0F0F0;
+        }
+
+        .macro-item {
+            text-align: center;
+            padding: 12px;
+            background: #FAFAFA;
+            border-radius: 12px;
+        }
+
+        .macro-value {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .macro-label {
+            font-size: 11px;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 4px;
+        }
+
+        .quick-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .action-btn {
+            background: #FF6B35;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 20px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: 0 4px 12px rgba(255,107,53,0.25);
+        }
+
+        .action-btn:active {
+            transform: translateY(2px);
+        }
+
+        .action-btn.secondary {
+            background: white;
+            color: #000;
+            border: 2px solid #E0E0E0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+
+        .progress-summary {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px;
+            background: linear-gradient(135deg, #E8F5E9 0%, #F1F8E9 100%);
+            border-radius: 12px;
+        }
+
+        .progress-icon {
+            width: 48px;
+            height: 48px;
+            background: #00C853;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .progress-text {
+            flex: 1;
+        }
+
+        .progress-value {
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .progress-change {
+            font-size: 14px;
+            color: #00C853;
+            font-weight: 600;
+        }
+
+        /* Food Logger */
+        .food-logger {
+            display: none;
+        }
+
+        .food-logger.active {
+            display: block;
+        }
+
+        .voice-input-container {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .voice-button {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: #FF6B35;
+            border: none;
+            color: white;
+            font-size: 48px;
+            cursor: pointer;
+            box-shadow: 0 8px 24px rgba(255,107,53,0.4);
+            margin: 0 auto 20px;
+            display: block;
+        }
+
+        .voice-button:active {
+            transform: scale(0.95);
+        }
+
+        .voice-button.listening {
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 8px 24px rgba(255,107,53,0.4); }
+            50% { box-shadow: 0 8px 32px rgba(255,107,53,0.8), 0 0 0 20px rgba(255,107,53,0.1); }
+        }
+
+        .input-hint {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .text-input {
+            width: 100%;
+            padding: 16px;
+            border: 2px solid #E0E0E0;
+            border-radius: 12px;
+            font-size: 16px;
+            margin-bottom: 12px;
+        }
+
+        .text-input:focus {
+            outline: none;
+            border-color: #FF6B35;
+        }
+
+        .recent-meals {
+            margin-top: 24px;
+        }
+
+        .recent-meals-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #666;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .meal-chip {
+            display: inline-block;
+            padding: 8px 16px;
+            background: #FAFAFA;
+            border: 1px solid #E0E0E0;
+            border-radius: 20px;
+            margin: 4px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .meal-chip:hover {
+            background: #FEF2F2;
+            border-color: #FF6B35;
+        }
+
+        .parsed-result {
+            margin-top: 20px;
+            padding: 20px;
+            background: #E8F5E9;
+            border-radius: 12px;
+            border: 2px solid #00C853;
+        }
+
+        .parsed-item {
+            padding: 12px;
+            background: white;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .item-name {
+            font-weight: 600;
+        }
+
+        .item-macros {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #FFF;
+            box-shadow: 0 -2px 8px rgba(0,0,0,0.04);
+            display: flex;
+            justify-content: space-around;
+            padding: 12px 0;
+            z-index: 100;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            color: #666;
+            font-size: 12px;
+            cursor: pointer;
+            padding: 8px 16px;
+        }
+
+        .nav-item.active {
+            color: #FF6B35;
+        }
+
+        .nav-icon {
+            font-size: 24px;
+        }
+
+        .coach-avatar {
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #F3F4F6;
+            border-top-color: #FF6B35;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 12px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .back-btn {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 8px;
+        }
+
+        /* Motivational Banner */
+        .motivation-banner {
+            background: linear-gradient(135deg, #FF6B35 0%, #FF8E53 100%);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            box-shadow: 0 4px 16px rgba(255, 107, 53, 0.3);
+            animation: slideIn 0.5s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .motivation-icon {
+            width: 56px;
+            height: 56px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            flex-shrink: 0;
+        }
+
+        .motivation-text {
+            color: white;
+            flex: 1;
+        }
+
+        .motivation-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .motivation-subtitle {
+            font-size: 14px;
+            opacity: 0.95;
+        }
+
+        /* Workout Tracker */
+        .workout-meta {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .workout-progress-header {
+            background: #FAFAFA;
+            padding: 16px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+
+        .workout-progress-text {
+            margin-bottom: 12px;
+        }
+
+        .workout-progress-bar {
+            height: 8px;
+            background: #F0F0F0;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .workout-progress-fill {
+            height: 100%;
+            background: #00C853;
+            transition: width 0.3s ease;
+        }
+
+        .exercise-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .exercise-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px;
+            background: #FAFAFA;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .exercise-item:active {
+            transform: scale(0.98);
+        }
+
+        .exercise-item.completed {
+            background: #E8F5E9;
+        }
+
+        .exercise-checkbox {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        .exercise-item .exercise-checkbox {
+            background: white;
+            border: 2px solid #E0E0E0;
+            color: #E0E0E0;
+        }
+
+        .exercise-item.completed .exercise-checkbox {
+            background: #00C853;
+            border: 2px solid #00C853;
+            color: white;
+        }
+
+        .exercise-info {
+            flex: 1;
+        }
+
+        .exercise-name {
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .exercise-details {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .exercise-arrow {
+            color: #999;
+            font-size: 20px;
+        }
+
+        .exercise-meta {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .sets-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .set-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px;
+            background: #FAFAFA;
+            border-radius: 12px;
+            cursor: pointer;
+        }
+
+        .set-item.completed {
+            background: #E8F5E9;
+        }
+
+        .set-checkbox {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            background: white;
+            border: 2px solid #E0E0E0;
+            color: #E0E0E0;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        .set-item.completed .set-checkbox {
+            background: #00C853;
+            border: 2px solid #00C853;
+            color: white;
+        }
+
+        .set-info {
+            flex: 1;
+        }
+
+        .set-label {
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .set-details {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .weight-input {
+            width: 80px;
+            padding: 8px 12px;
+            border: 2px solid #E0E0E0;
+            border-radius: 8px;
+            font-size: 16px;
+            text-align: center;
+        }
+
+        .weight-input:focus {
+            outline: none;
+            border-color: #FF6B35;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-content">
+            <button class="back-btn hidden" id="backBtn">←</button>
+            <h1 id="headerTitle">FITTR</h1>
+            <div class="date-badge" id="currentDate"></div>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Home Screen -->
+        <div id="homeScreen">
+            <!-- Motivational Banner -->
+            <div class="motivation-banner">
+                <div class="motivation-icon">🔥</div>
+                <div class="motivation-text">
+                    <div class="motivation-title">5 Day Streak!</div>
+                    <div class="motivation-subtitle">You've logged food 5 days in a row</div>
+                </div>
+            </div>
+
+            <!-- Today's Progress Card -->
+            <div class="card">
+                <div class="card-title">Today's Progress</div>
+                <div class="progress-grid">
+                    <!-- Nutrition Progress -->
+                    <div class="progress-section">
+                        <div class="section-label">🍽️ Nutrition</div>
+                        <div class="mini-ring">
+                            <svg width="120" height="120">
+                                <circle cx="60" cy="60" r="50" fill="none" stroke="#F0F0F0" stroke-width="10"/>
+                                <circle cx="60" cy="60" r="50" fill="none" stroke="#FF6B35" stroke-width="10" 
+                                        stroke-linecap="round" stroke-dasharray="314 314" stroke-dashoffset="200"/>
+                            </svg>
+                            <div class="ring-text">
+                                <span class="ring-number">533</span>
+                                <span class="ring-subtitle">of 1626 kcal</span>
+                            </div>
+                        </div>
+                        <div class="macro-stats">
+                            <div class="macro-item">
+                                <div class="macro-value">41/90g</div>
+                                <div class="macro-label">Protein</div>
+                            </div>
+                            <div class="macro-item">
+                                <div class="macro-value">0/30g</div>
+                                <div class="macro-label">Fiber</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Workout Progress -->
+                    <div class="progress-section">
+                        <div class="section-label">💪 Workouts</div>
+                        <div class="mini-ring">
+                            <svg width="120" height="120">
+                                <circle cx="60" cy="60" r="50" fill="none" stroke="#F0F0F0" stroke-width="10"/>
+                                <circle cx="60" cy="60" r="50" fill="none" stroke="#00C853" stroke-width="10" 
+                                        stroke-linecap="round" stroke-dasharray="314 314" stroke-dashoffset="235"/>
+                            </svg>
+                            <div class="ring-text">
+                                <span class="ring-number">1/6</span>
+                                <span class="ring-subtitle">exercises</span>
+                            </div>
+                        </div>
+                        <div style="margin-top: 16px;">
+                            <div style="font-size: 14px; font-weight: 600; margin-bottom: 8px;">Upper Body Today</div>
+                            <div style="font-size: 12px; color: #666; line-height: 1.4;">
+                                ✓ Dumbbell Chest Press<br>
+                                ○ Decline Bench Press<br>
+                                ○ Barbell Pullover<br>
+                                <span style="color: #999;">+ 3 more</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions Card -->
+            <div class="card">
+                <div class="card-title">Quick Actions</div>
+                <div class="quick-actions">
+                    <button class="action-btn" onclick="showFoodLogger()">
+                        🎤 Log Food
+                    </button>
+                    <button class="action-btn secondary" onclick="showWorkoutTracker()">
+                        ✓ Log Workout
+                    </button>
+                </div>
+            </div>
+
+            <!-- My Progress Card -->
+            <div class="card">
+                <div class="card-title">My Progress</div>
+                <div class="progress-summary">
+                    <div class="progress-icon">📊</div>
+                    <div class="progress-text">
+                        <div class="progress-value">149.8 lbs</div>
+                        <div class="progress-change">-1.44 lbs this week ↓</div>
+                    </div>
+                </div>
+                <div style="text-align: center; margin-top: 16px;">
+                    <button class="action-btn secondary" style="width: 100%;" onclick="alert('Full progress dashboard coming soon!')">
+                        View Full Progress →
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Food Logger Screen -->
+        <div id="foodLogger" class="food-logger">
+            <div class="card">
+                <div class="card-title">Log Your Meal</div>
+                
+                <div class="voice-input-container">
+                    <button class="voice-button" id="voiceBtn" onclick="startVoiceInput()">
+                        🎤
+                    </button>
+                    <div class="input-hint">Voice not ready yet - Type below instead</div>
+                    
+                    <input type="text" 
+                           class="text-input" 
+                           id="foodInput" 
+                           placeholder="e.g., 2 rotis, dal makhani, raita"
+                           onkeypress="handleKeyPress(event)">
+                    
+                    <button class="action-btn" style="width: 100%;" onclick="parseFood()">
+                        Parse with AI
+                    </button>
+                </div>
+
+                <div id="loadingState" class="loading hidden">
+                    <div class="spinner"></div>
+                    <div>AI is parsing your food...</div>
+                </div>
+
+                <div id="parsedResult" class="parsed-result hidden">
+                    <!-- Results will be inserted here -->
+                </div>
+
+                <div class="recent-meals">
+                    <div class="recent-meals-title">Recent Meals</div>
+                    <div class="meal-chip" onclick="quickLog('Yesterday\'s breakfast')">Yesterday's breakfast (533 kcal)</div>
+                    <div class="meal-chip" onclick="quickLog('Usual lunch')">Usual lunch (625 kcal)</div>
+                    <div class="meal-chip" onclick="quickLog('Protein shake')">Protein shake (139 kcal)</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Workout Tracker Screen -->
+        <div id="workoutTracker" class="food-logger">
+            <div class="card">
+                <div class="card-title">Upper Body Workout</div>
+                <div class="workout-meta">
+                    <span>💪 Triceps, Delts, Chest, Shoulders, Abs</span>
+                </div>
+                
+                <div class="workout-progress-header">
+                    <div class="workout-progress-text">
+                        <span style="font-size: 24px; font-weight: 700;">1/6</span>
+                        <span style="color: #666; margin-left: 8px;">exercises complete</span>
+                    </div>
+                    <div class="workout-progress-bar">
+                        <div class="workout-progress-fill" style="width: 16.6%"></div>
+                    </div>
+                </div>
+
+                <div class="exercise-list">
+                    <div class="exercise-item completed" onclick="openExercise(0)">
+                        <div class="exercise-checkbox">✓</div>
+                        <div class="exercise-info">
+                            <div class="exercise-name">Dumbbell Flat Chest Press</div>
+                            <div class="exercise-details">Chest • 4/4 sets</div>
+                        </div>
+                        <div class="exercise-arrow">→</div>
+                    </div>
+
+                    <div class="exercise-item" onclick="openExercise(1)">
+                        <div class="exercise-checkbox">○</div>
+                        <div class="exercise-info">
+                            <div class="exercise-name">Decline Bench Press</div>
+                            <div class="exercise-details">Chest • 0/4 sets</div>
+                        </div>
+                        <div class="exercise-arrow">→</div>
+                    </div>
+
+                    <div class="exercise-item" onclick="openExercise(2)">
+                        <div class="exercise-checkbox">○</div>
+                        <div class="exercise-info">
+                            <div class="exercise-name">Barbell Pullover</div>
+                            <div class="exercise-details">Chest • 0/4 sets</div>
+                        </div>
+                        <div class="exercise-arrow">→</div>
+                    </div>
+
+                    <div class="exercise-item" onclick="openExercise(3)">
+                        <div class="exercise-checkbox">○</div>
+                        <div class="exercise-info">
+                            <div class="exercise-name">Overhead Military Press</div>
+                            <div class="exercise-details">Delts • 0/4 sets</div>
+                        </div>
+                        <div class="exercise-arrow">→</div>
+                    </div>
+
+                    <div class="exercise-item" onclick="openExercise(4)">
+                        <div class="exercise-checkbox">○</div>
+                        <div class="exercise-info">
+                            <div class="exercise-name">Dumbbell Lying Rear Delt Raise</div>
+                            <div class="exercise-details">Delts • 0/3 sets</div>
+                        </div>
+                        <div class="exercise-arrow">→</div>
+                    </div>
+
+                    <div class="exercise-item" onclick="openExercise(5)">
+                        <div class="exercise-checkbox">○</div>
+                        <div class="exercise-info">
+                            <div class="exercise-name">Dumbbell Front Raise</div>
+                            <div class="exercise-details">Delts • 0/3 sets</div>
+                        </div>
+                        <div class="exercise-arrow">→</div>
+                    </div>
+                </div>
+
+                <button class="action-btn" style="width: 100%; margin-top: 20px;" onclick="finishWorkout()">
+                    Finish Workout
+                </button>
+            </div>
+        </div>
+
+        <!-- Exercise Detail Screen -->
+        <div id="exerciseDetail" class="food-logger">
+            <div class="card">
+                <div class="card-title" id="exerciseName">Dumbbell Flat Chest Press</div>
+                <div class="exercise-meta">
+                    <span style="color: #666;">Chest</span>
+                </div>
+
+                <div class="sets-list" id="setsList">
+                    <!-- Sets will be inserted here -->
+                </div>
+
+                <button class="action-btn" style="width: 100%; margin-top: 20px;" onclick="completeExercise()">
+                    Mark Exercise Complete ✓
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <div class="bottom-nav">
+        <div class="nav-item active" onclick="showHome()">
+            <div class="nav-icon">🏠</div>
+            <div>Home</div>
+        </div>
+        <div class="nav-item" onclick="alert('My Plan includes:\n• Nutrition Plan\n• Workout Plan\n• Progress Dashboard')">
+            <div class="nav-icon">📋</div>
+            <div>My Plan</div>
+        </div>
+        <div class="nav-item" onclick="alert('Community features:\n• Transformation stories\n• Group challenges\n• FITTR Inner Circles')">
+            <div class="nav-icon">👥</div>
+            <div>Community</div>
+        </div>
+        <div class="nav-item" onclick="alert('Chat with Dr. Sushma Pachouri')">
+            <div class="nav-icon">
+                <div style="width: 28px; height: 28px; background: #FF6B35; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 12px; font-weight: 700;">DS</div>
+            </div>
+            <div>Coach Convos</div>
+        </div>
+    </div>
+
+    <script>
+        const options = { weekday: 'short', month: 'short', day: 'numeric' };
+        document.getElementById('currentDate').textContent = 
+            new Date().toLocaleDateString('en-US', options);
+
+        function showHome() {
+            document.getElementById('homeScreen').classList.remove('hidden');
+            document.getElementById('foodLogger').classList.remove('active');
+            document.getElementById('backBtn').classList.add('hidden');
+            document.getElementById('headerTitle').textContent = 'FITTR';
+            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+            document.querySelectorAll('.nav-item')[0].classList.add('active');
+        }
+
+        function showFoodLogger() {
+            document.getElementById('homeScreen').classList.add('hidden');
+            document.getElementById('foodLogger').classList.add('active');
+            document.getElementById('backBtn').classList.remove('hidden');
+            document.getElementById('headerTitle').textContent = 'Log Food';
+        }
+
+        document.getElementById('backBtn').addEventListener('click', function() {
+            if (document.getElementById('exerciseDetail').classList.contains('active')) {
+                document.getElementById('exerciseDetail').classList.remove('active');
+                document.getElementById('workoutTracker').classList.add('active');
+                document.getElementById('headerTitle').textContent = 'Today\'s Workout';
+            } else if (document.getElementById('workoutTracker').classList.contains('active')) {
+                showHome();
+            } else {
+                showHome();
+            }
+        });
+
+        function startVoiceInput() {
+            alert('Voice recognition will be added in next iteration. Please type your meal instead!');
+        }
+
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                parseFood();
+            }
+        }
+
+        function quickLog(meal) {
+            document.getElementById('foodInput').value = meal;
+            parseFood();
+        }
+
+        function parseFood() {
+            const input = document.getElementById('foodInput').value.trim();
+            if (!input) {
+                alert('Please enter some food items');
+                return;
+            }
+
+            document.getElementById('loadingState').classList.remove('hidden');
+            document.getElementById('parsedResult').classList.add('hidden');
+
+            // Show demo data (AI parsing will be added when you add API key)
+            setTimeout(() => {
+                displayParsedFood([
+                    {"name": "Roti", "quantity": "2", "calories": 150, "protein": 5, "carbs": 30, "fat": 2},
+                    {"name": "Dal Makhani", "quantity": "1 cup", "calories": 280, "protein": 12, "carbs": 35, "fat": 12},
+                    {"name": "Raita", "quantity": "1/2 cup", "calories": 60, "protein": 3, "carbs": 6, "fat": 3},
+                    {"name": "Rice", "quantity": "1 cup", "calories": 200, "protein": 4, "carbs": 45, "fat": 0.5}
+                ]);
+                document.getElementById('loadingState').classList.add('hidden');
+            }, 1500);
+        }
+
+        function displayParsedFood(foods) {
+            const resultDiv = document.getElementById('parsedResult');
+            
+            const totals = foods.reduce((acc, food) => ({
+                calories: acc.calories + food.calories,
+                protein: acc.protein + food.protein,
+                carbs: acc.carbs + food.carbs,
+                fat: acc.fat + food.fat
+            }), { calories: 0, protein: 0, carbs: 0, fat: 0 });
+
+            let html = '';
+            foods.forEach(food => {
+                html += `
+                    <div class="parsed-item">
+                        <div>
+                            <div class="item-name">${food.name} (${food.quantity})</div>
+                            <div class="item-macros">
+                                ${food.calories} kcal • P: ${food.protein}g • C: ${food.carbs}g • F: ${food.fat}g
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            html += `
+                <div class="parsed-item" style="background: #00C853; color: white; font-weight: 700; margin-top: 12px;">
+                    <div>
+                        <div class="item-name" style="color: white;">Total</div>
+                        <div class="item-macros" style="color: white; opacity: 0.9;">
+                            ${totals.calories} kcal • P: ${totals.protein}g • C: ${totals.carbs}g • F: ${totals.fat}g
+                        </div>
+                    </div>
+                </div>
+                <button class="action-btn" style="width: 100%; margin-top: 16px;" onclick="saveMeal()">
+                    Save Meal ✓
+                </button>
+            `;
+
+            resultDiv.innerHTML = html;
+            resultDiv.classList.remove('hidden');
+        }
+
+        function saveMeal() {
+            alert('Meal saved! ✓\n\nIn the full app, this would:\n- Add to today\'s log\n- Update progress ring\n- Add to food memory\n- Sync with your coach');
+            showHome();
+            document.getElementById('foodInput').value = '';
+            document.getElementById('parsedResult').classList.add('hidden');
+        }
+
+        // Workout Tracker
+        const exercises = [
+            { name: "Dumbbell Flat Chest Press", muscle: "Chest", sets: 4, completed: 4 },
+            { name: "Decline Bench Press", muscle: "Chest", sets: 4, completed: 0 },
+            { name: "Barbell Pullover", muscle: "Chest", sets: 4, completed: 0 },
+            { name: "Overhead Military Press", muscle: "Delts", sets: 4, completed: 0 },
+            { name: "Dumbbell Lying Rear Delt Raise", muscle: "Delts", sets: 3, completed: 0 },
+            { name: "Dumbbell Front Raise", muscle: "Delts", sets: 3, completed: 0 }
+        ];
+
+        let currentExercise = 0;
+
+        function showWorkoutTracker() {
+            document.getElementById('homeScreen').classList.add('hidden');
+            document.getElementById('workoutTracker').classList.add('active');
+            document.getElementById('backBtn').classList.remove('hidden');
+            document.getElementById('headerTitle').textContent = 'Today\'s Workout';
+        }
+
+        function openExercise(index) {
+            currentExercise = index;
+            const exercise = exercises[index];
+            
+            document.getElementById('workoutTracker').classList.remove('active');
+            document.getElementById('exerciseDetail').classList.add('active');
+            document.getElementById('headerTitle').textContent = exercise.name;
+            document.getElementById('exerciseName').textContent = exercise.name;
+            
+            // Render sets
+            let setsHTML = '';
+            for (let i = 0; i < exercise.sets; i++) {
+                const isCompleted = i < exercise.completed;
+                setsHTML += `
+                    <div class="set-item ${isCompleted ? 'completed' : ''}" onclick="toggleSet(${index}, ${i})">
+                        <div class="set-checkbox">${isCompleted ? '✓' : '○'}</div>
+                        <div class="set-info">
+                            <div class="set-label">SET ${i + 1}</div>
+                            <div class="set-details">10 reps × ${isCompleted ? '25' : '__'} lbs</div>
+                        </div>
+                        ${!isCompleted ? '<input type="number" class="weight-input" placeholder="lbs" onclick="event.stopPropagation()">' : ''}
+                    </div>
+                `;
+            }
+            document.getElementById('setsList').innerHTML = setsHTML;
+        }
+
+        function toggleSet(exerciseIndex, setIndex) {
+            const exercise = exercises[exerciseIndex];
+            if (setIndex < exercise.completed) {
+                // Uncomplete
+                exercise.completed = setIndex;
+            } else {
+                // Complete
+                exercise.completed = setIndex + 1;
+            }
+            openExercise(exerciseIndex);
+        }
+
+        function completeExercise() {
+            const exercise = exercises[currentExercise];
+            if (exercise.completed < exercise.sets) {
+                alert('Please complete all sets before marking as done');
+                return;
+            }
+            
+            // Go back to workout list
+            document.getElementById('exerciseDetail').classList.remove('active');
+            document.getElementById('workoutTracker').classList.add('active');
+            document.getElementById('headerTitle').textContent = 'Today\'s Workout';
+        }
+
+        function finishWorkout() {
+            const completed = exercises.filter(e => e.completed === e.sets).length;
+            alert(`Workout complete! ✓\n\nYou finished ${completed}/${exercises.length} exercises\n\nIn the full app, this would:\n- Save to your workout log\n- Update weekly progress\n- Sync with your coach`);
+            showHome();
+        }
+
+        // Update back button to handle workout screens
+        document.getElementById('backBtn').addEventListener('click', function() {
+            if (document.getElementById('exerciseDetail').classList.contains('active')) {
+                document.getElementById('exerciseDetail').classList.remove('active');
+                document.getElementById('workoutTracker').classList.add('active');
+                document.getElementById('headerTitle').textContent = 'Today\'s Workout';
+            } else if (document.getElementById('workoutTracker').classList.contains('active')) {
+                showHome();
+            } else {
+                showHome();
+            }
+        });
+    </script>
+</body>
+</html>
